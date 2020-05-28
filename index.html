@@ -1,0 +1,748 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>머신러닝 프로젝트: 화장품 추천시스템</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="13207c84-3904-4512-8346-6f43cb52ef48" class="page sans"><header><img class="page-cover-image" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/THUMBNAIL_Fotolia_124863579_Subscription_Monthly_M.jpg" style="object-position:center 50%"/><h1 class="page-title">머신러닝 프로젝트: 화장품 추천시스템</h1><table class="properties"><tbody><tr class="property-row property-row-created_time"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCreatedAt"><path d="M6.98643729,14.0000972 C5.19579566,14.0000972 3.40419152,13.3106896 2.04245843,11.9323606 C-0.681017475,9.21200555 -0.680780251,4.76029539 2.04293482,2.04012507 C4.76664406,-0.68004331 9.22427509,-0.68004331 11.9480135,2.04013479 C13.272481,3.36277455 14,5.1330091 14,6.99552762 C14,8.87640182 13.2721894,10.6285043 11.9480135,11.9509302 C10.5679344,13.3105924 8.77756503,14.0000972 6.98643729,14.0000972 Z M10.2705296,7.00913883 L10.2705296,8.46099754 L10.2705296,8.65543362 L10.076181,8.65543362 L8.6543739,8.65543362 L5.72059514,8.65543362 L5.52619796,8.65543362 L5.52619796,8.46099754 L5.52619796,5.52541044 L5.52619796,3.37946773 L5.52619796,3.18502193 L5.72059514,3.18502193 L7.17253164,3.18502193 L7.36692883,3.18502193 L7.36692883,3.37946773 L7.36692883,6.81467358 L10.076181,6.81467358 L10.2705296,6.81467358 L10.2705296,7.00913883 Z M12.1601539,6.99552762 C12.1601539,5.61697497 11.6190112,4.32597154 10.6393933,3.34769528 C8.63253764,1.34336744 5.35197452,1.34061603 3.34153136,3.33944106 C3.33868273,3.34219247 3.33607716,3.34494388 3.33322852,3.34769528 C1.32397148,5.35459953 1.32372842,8.63641682 3.33322852,10.6433794 C5.34295224,12.6504489 8.62968901,12.6504489 10.6393933,10.6433794 C11.6190112,9.66506426 12.1601539,8.37408027 12.1601539,6.99552762 Z"></path></svg></span>Created</th><td><time>@May 27, 2020 3:39 PM</time></td></tr><tr class="property-row property-row-created_by"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCreatedBy"><path d="M13.125,10.0354 C12.5536,9.48588 10.801,8.53125 9.625,7.875 L9.625,7.04112 C9.849,6.71912 10.045,6.37 10.1911,5.98588 C10.5849,5.7435 10.9375,5.28412 10.9375,4.8125 C10.9375,4.35488 10.9323,3.94275 10.4668,3.605 C10.3049,1.5575 9.436,0 7,0 C4.564,0 3.69513,1.5575 3.53325,3.605 C3.06775,3.94275 3.0625,4.35488 3.0625,4.8125 C3.0625,5.28412 3.41513,5.7435 3.80888,5.98588 C3.955,6.37 4.151,6.71912 4.375,7.04112 L4.375,7.875 C3.199,8.53125 1.44638,9.48588 0.875,10.0354 C0.1645,10.7188 0,11.8125 0,14 L14,14 C14,11.8125 13.8364,10.7188 13.125,10.0354 Z"></path></svg></span>Created By</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14GgqU2OMIi5SOI14pHaA1u9JRUinW-5UPCUmnHNv=s100" class="icon user-icon"/>Heejae Lee</span></td></tr><tr class="property-row property-row-last_edited_time"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCreatedAt"><path d="M6.98643729,14.0000972 C5.19579566,14.0000972 3.40419152,13.3106896 2.04245843,11.9323606 C-0.681017475,9.21200555 -0.680780251,4.76029539 2.04293482,2.04012507 C4.76664406,-0.68004331 9.22427509,-0.68004331 11.9480135,2.04013479 C13.272481,3.36277455 14,5.1330091 14,6.99552762 C14,8.87640182 13.2721894,10.6285043 11.9480135,11.9509302 C10.5679344,13.3105924 8.77756503,14.0000972 6.98643729,14.0000972 Z M10.2705296,7.00913883 L10.2705296,8.46099754 L10.2705296,8.65543362 L10.076181,8.65543362 L8.6543739,8.65543362 L5.72059514,8.65543362 L5.52619796,8.65543362 L5.52619796,8.46099754 L5.52619796,5.52541044 L5.52619796,3.37946773 L5.52619796,3.18502193 L5.72059514,3.18502193 L7.17253164,3.18502193 L7.36692883,3.18502193 L7.36692883,3.37946773 L7.36692883,6.81467358 L10.076181,6.81467358 L10.2705296,6.81467358 L10.2705296,7.00913883 Z M12.1601539,6.99552762 C12.1601539,5.61697497 11.6190112,4.32597154 10.6393933,3.34769528 C8.63253764,1.34336744 5.35197452,1.34061603 3.34153136,3.33944106 C3.33868273,3.34219247 3.33607716,3.34494388 3.33322852,3.34769528 C1.32397148,5.35459953 1.32372842,8.63641682 3.33322852,10.6433794 C5.34295224,12.6504489 8.62968901,12.6504489 10.6393933,10.6433794 C11.6190112,9.66506426 12.1601539,8.37408027 12.1601539,6.99552762 Z"></path></svg></span>Last Edited Time</th><td><time>@May 28, 2020 6:37 PM</time></td></tr><tr class="property-row property-row-person"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesPerson"><path d="M9.625,10.8465 C8.91187,10.2891 8.12088,9.926 7,9.26013 L7,8.71938 C7.21175,8.47612 7.392,8.176 7.53813,7.83213 C7.94587,7.7315 8.3125,7.33425 8.3125,7 C8.3125,6.51788 8.1095,6.32713 7.8715,6.17137 C7.8715,6.15562 7.875,6.14162 7.875,6.125 C7.875,5.41362 7.4375,3.5 5.25,3.5 C3.0625,3.5 2.625,5.4145 2.625,6.125 C2.625,6.14162 2.6285,6.15562 2.6285,6.17137 C2.3905,6.32713 2.1875,6.51788 2.1875,7 C2.1875,7.33425 2.55413,7.7315 2.96187,7.833 C3.108,8.176 3.28825,8.47612 3.5,8.71938 L3.5,9.26013 C2.37912,9.92513 1.58812,10.2882 0.875,10.8465 C0.041125,11.4984 0,12.4688 0,14 L10.5,14 C10.5,12.4688 10.4589,11.4984 9.625,10.8465 Z M13.125,7.3465 C12.4119,6.78912 11.6209,6.426 10.5,5.76013 L10.5,5.21938 C10.7118,4.97613 10.892,4.676 11.0381,4.33213 C11.4459,4.2315 11.8125,3.83425 11.8125,3.5 C11.8125,3.01787 11.6095,2.82713 11.3715,2.67138 C11.3715,2.65562 11.375,2.64162 11.375,2.625 C11.375,1.91363 10.9375,0 8.75,0 C6.5625,0 6.125,1.9145 6.125,2.625 C6.125,2.64162 6.1285,2.65562 6.1285,2.67138 C6.11188,2.68275 6.09787,2.69588 6.08125,2.70725 C7.83212,3.066 8.59688,4.54825 8.72813,5.74787 C8.97575,6.00863 9.1875,6.39625 9.1875,7 C9.1875,7.60288 8.771,8.20312 8.18388,8.51462 C8.127,8.624 8.06662,8.729 8.00275,8.82962 C8.155,8.91537 8.30025,8.99675 8.44025,9.07463 C9.08075,9.4325 9.63375,9.74137 10.164,10.1561 C10.3022,10.2638 10.4204,10.3801 10.5289,10.4991 L14,10.4991 C14,8.96875 13.9589,7.99837 13.125,7.3465 Z"></path></svg></span>Participants</th><td><span class="user"><span class="icon text-icon user-icon"><span class="user-icon-inner">Y</span></span>YESEUL YOON</span><span class="user"><span class="icon text-icon user-icon"><span class="user-icon-inner">J</span></span>Jinkyeong Oh</span><span class="user"><span class="icon text-icon user-icon"><span class="user-icon-inner">J</span></span>June Yang</span></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>Property</th><td></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>Type</th><td></td></tr></tbody></table></header><div class="page-body"><h1 id="1e6c2056-c137-4d8f-9c5d-f552c135564b" class="block-color-brown">1. 프로젝트 개요</h1><h2 id="08533c61-1bc9-4c82-8e11-127ed9065f9d" class="block-color-brown">1-1. 주제 </h2><h3 id="d13ad1e3-5d01-4190-978a-51c86b692e6d" class="block-color-brown">(1) 선정 배경</h3><ul id="408046fb-c924-427a-8331-8637cc16aff0" class="bulleted-list"><li>다수의 화장품 추천 어플들이 피부 타입 등을 고려하지 않은 &#x27;총 평점&#x27;을 기준으로 제품 랭킹 리스트를 제공하고 있다. <mark class="highlight-orange"><strong>개별 사용자의 나이, 피부 타입 등 특성에 따라 보여지는 랭킹 리스트도 달라져야 하지 않을까?</strong></mark></li></ul><h3 id="e5b0132b-cbc5-4390-a5fc-2f79611c6467" class="block-color-brown">(2) <strong>화장품 리뷰 플랫폼 &#x27;글로우픽&#x27;을 활용한 사용자 기반 화장품 추천</strong></h3><ul id="5822044c-6176-4248-80d0-dd2c5fc2ece5" class="bulleted-list"><li><a href="https://www.glowpick.com/">글로우픽 URL</a></li></ul><ul id="f0cf4fd8-3ba2-4d04-86d7-a41acea89e9c" class="bulleted-list"><li>사용자 정보 : 아이디, 성별, 연령대, 피부타입, 평점, 제품 리뷰</li></ul><p id="7784e59b-02eb-4c63-976e-248129739f32" class="">
+</p><h2 id="bf02dee2-fe1a-4aee-a9dd-86a6e17b5a6f" class=""><mark class="highlight-brown">1-2. 뷰티 어플리케이션 시장분석 (2019.07 기준)</mark></h2><p id="80bb4f4d-1ae3-4294-8332-7c69538bbf9f" class="">
+</p><p id="8f504fca-f365-4267-ab05-8550723115a1" class=""><strong>(1) 뷰티 어플 이용자 총 373만명.. 스마트폰 사용자 3,938만명 대비 약 9.5%</strong></p><p id="6f52e2c8-3a23-482b-bdea-a8f75e444bb8" class="">
+</p><p id="504e79b0-e61f-45bf-b5e5-4d494c992cf8" class=""><strong>(2) 뷰티커머스 어플(화해, 글로우픽, 미미박스 등) 이용자 162만명</strong></p><ul id="14c3e33a-0a0e-4e98-aaea-cdefe68b2f11" class="bulleted-list"><li>뷰티 어플 5개 유형 중 가장 많은 이용자 (전체 대비 43%)- 올리브영, 랄라블라 등 H&amp;B스토어 어플이 2위</li></ul><figure id="eb28bf44-d665-4e1b-a9d0-d4dd1a76cde1" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img4.png"><img style="width:812px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img4.png"/></a></figure><p id="9886e5bf-5e27-4de0-ad4e-e1fd7d469430" class="">
+</p><p id="a24de109-020e-41ba-8b81-51654578cc0c" class=""><strong>(3) 뷰티커머스 어플, 10대~20대 사용 두드러져.. 40대 이상은 &#x27;올리브영&#x27;</strong></p><ul id="d060b429-271b-4781-8dee-e2652698e71a" class="bulleted-list"><li>브랜드 충성도가 낮고, 다양한 제품들의 리뷰를 보고 합리적으로 소비하고자 하는 젊은 층 특성에 기인- 뷰티커머스를 제외한 타 유형에서는 30대 사용자가 가장 많음</li></ul><figure id="8dbf633f-35bc-417c-80f9-eddb85496023" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img5.png"><img style="width:1214px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img5.png"/></a></figure><p id="3397d351-7f8a-42ad-81b4-0dd64d693c5b" class="">
+</p><p id="8021072a-030e-4b05-8391-c62a746e0440" class=""><strong>(4) 오후 12시에서 14시, 18시에서 21시에 활성 사용자 수 &#x27;급증&#x27;</strong></p><ul id="642acc09-6924-4b44-9c4c-f077ec34fb7a" class="bulleted-list"><li>젊은 여성들이 점심시간, 퇴근시간 활용해 어플에 접속하는 경향을 보임</li></ul><figure id="53803c80-9790-481c-b993-17f42b468fa8" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img9.png"><img style="width:1506px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img9.png"/></a></figure><p id="14bb6342-4682-429d-8ca8-8918bf2faeb1" class="">
+</p><h2 id="1647b57b-95e6-4bb7-b932-110f16339ee4" class="block-color-brown">1-3. 경쟁사분석 : 화해(화장품을 해석하다) </h2><p id="ee81d295-bd84-4b69-9147-fb02f1128c6e" class="">
+</p><p id="31a0f0ad-f3f3-4fd2-90a1-62ee4b30b9f6" class=""><strong>(1) 어플 출시: 화해(버드뷰) 2013년 vs 글로우픽(글로우데이즈) 2014년</strong></p><p id="ae9b429d-11f6-46d8-bda6-c00fb671ca1e" class="">
+</p><p id="3e5383d3-cc60-4a1a-a501-95fecc6cc677" class=""><strong>(2) 매출 규모(2018년 기준) : 버드뷰 약 81억(+156%) vs 글로우데이즈 약 22억(+42%)</strong></p><p id="e0a677e3-3740-4274-8293-e8420a417830" class="">
+</p><p id="800ce928-5bb5-45cb-aa0f-d3268bbea33d" class=""><strong>(3) 누적 리뷰수(2020.05.11 기준): 화해 511만256건 vs 글로우픽 348만8381건</strong></p><p id="f190b00a-a780-4e01-8a62-426ebd2c87fd" class="">
+</p><p id="c823a8fc-a9aa-4f34-9492-d33a43a9185e" class=""><strong>(4) 핵심 경쟁력</strong></p><ul id="aa83b7e7-8fb3-4582-be45-8baa69e30fc2" class="bulleted-list"><li>화해 : 성분 분석을 강조, 제품 정보 바로 하단에 성분에 대한 정보 상세 표기</li></ul><ul id="d6ce5777-7a69-444d-b82e-7ac5a4bb9bad" class="bulleted-list"><li>글로우픽 : 리뷰에 집중, 긍정리뷰와 부정리뷰 나눠보기 가능</li></ul><figure id="de0f09b6-b329-4ba9-9c34-eec075966b72" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img3.png"><img style="width:1106px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img3.png"/></a></figure><p id="422fa7cc-42d9-4dc5-b7a4-70a562849667" class="">
+</p><h2 id="89dab56c-8a8a-4ca1-a65f-5f6b67a82f33" class="block-color-brown">2. 데이터 수집</h2><p id="ebdc240e-1341-4ec9-9bc6-7a738dd43a7a" class="">
+</p><h3 id="26dda63c-1b50-49d4-beb1-99305b29acd1" class=""><strong>(1) 각 카테고리별 100개 상품 정보 크롤링 (JSON)</strong></h3><ul id="7ab49dda-fa66-4087-b2b5-9f5bc6e0e606" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">항목 : 브랜드명, 제품명, 제품아이디, 용량, 가격, 평점크롤링 코드</span></li></ul><figure id="68cb5a93-2942-4b75-b089-78a1529d5bb0" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img7.png"><img style="width:1742px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/glowpick_img7.png"/></a></figure><h3 id="932be73b-46ee-4dc6-a925-9682803bb6bb" class=""><strong>(2) 각 상품별 리뷰 크롤링 (JSON)</strong></h3><ul id="2cde8ea4-0475-48f1-83f8-189175aaecc8" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">항목 : 아이디, 연령, 피부타입, 성별, 평점, 리뷰(성별, 평점은 이미지 데이터) </span><p id="2180fb06-7586-45de-b2cc-39f1b9e8dff6" class="">        → 리뷰는 감성 분석으로 긍정/부정 단어 파악</p><figure id="f0a6df91-588d-45e8-9794-25ffd0037a8c" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/item_dfs.png"><img style="width:1990px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/item_dfs.png"/></a></figure><p id="5a34e65e-65e6-4256-96d2-1b9a6c12fd09" class="">
+</p></li></ul><h1 id="5bb9b7b8-7898-4722-9471-3d272f7d2844" class="block-color-brown">3. 데이터 분석</h1><h2 id="47cb1827-99d8-46e4-92a6-467420d7d7ee" class="block-color-brown">3-1. EDA</h2><h3 id="a4a48f86-d809-40a3-b531-ae2879d226ed" class=""><strong>(1) 데이터 전처리</strong></h3><p id="dc67e034-ea37-4029-87af-b34819fbc32b" class="">ㄱ. 나이<div class="indented"><ul id="0b66f357-ae0d-4613-a0cd-337e3b64d314" class="bulleted-list"><li>단위(&#x27;세&#x27;) 삭제</li></ul><ul id="1ed1b949-f046-475e-9d0b-428e3ea08e53" class="bulleted-list"><li>100세 이상 이거나, 연도가 잘못 들어간 경우가 있어, 80세 이하만 선정</li></ul><figure id="b17d2bd5-435f-479b-8cf5-9fa6e8f954ce" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__6.33.03.png"><img style="width:1290px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__6.33.03.png"/></a></figure></div></p><p id="8359fe98-073c-444d-93c8-68b9ebff6846" class="">ㄴ. 가격: <div class="indented"><ul id="ec46d05c-3994-4aac-af78-dee7d35174d2" class="bulleted-list"><li>단위(&#x27;원) 삭제,</li></ul><ul id="02fdb4b1-1341-421e-bc63-e27fd97bfdbe" class="bulleted-list"><li>&#x27;수퍼슬림 0.08g&#x27;처럼, 가격에 제품명과 단위가 들어간 경우 삭제</li></ul><p id="c044ebb5-5244-408f-9c12-211f54ffc3bd" class="">
+</p></div></p><p id="4aa6dc76-b7e5-4178-b4af-1e151cb077b5" class="">ㄷ. 사용자 id: 리뷰 개수가 2개 이상인 id만 선정</p><p id="44d13496-5dc1-42b5-8572-58016af8e844" class="">
+</p><h3 id="aabf41ab-7cbd-4cce-a91a-e38d69cc0e78" class=""><strong>(2) 사용자 성별에 따른 나이 분포</strong></h3><ul id="c38bfea6-61c8-4b32-95b0-11d5cf624f7c" class="bulleted-list"><li>성별과 무관하게, 20대~30대초반 사용자가 주 고객임을 알 수 있다.</li></ul><ul id="86699056-2351-469c-a4e3-98857ae69574" class="bulleted-list"><li>특히, 남성의 경우, 20대 중반의 고객이 가장 많은 것을 알 수 있다.<figure id="f2a52414-6e63-43e5-a2dd-a29d52cbf4ed" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__2.17.38.png"><img style="width:1582px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__2.17.38.png"/></a></figure><p id="df2e58a8-212d-4d68-8389-8adbdae76e06" class="">
+</p></li></ul><h3 id="6125221b-8163-4ed5-b9f6-430612ef3320" class=""><strong>(3) 사용자 피부 타입 분포</strong></h3><ul id="f15f3930-5ab1-4bb3-9675-caddf7f6d2a3" class="bulleted-list"><li>본인 피부를 복합성으로 분류하는 사용자가 41.5%이고, 중성은 6.3% 정도만 나타나고 있다.</li></ul><ul id="d30c6b8a-a57c-4766-9ec5-a02f901cbc06" class="bulleted-list"><li>복합성은 주로 얼굴의 중심 부위는 지성이고, 그 외 부분은 건조하거나 중성의 피부를 가지는 것을 의미하는데,  피부 타입 분류가 애매한 경우 복합성으로 생각하는 경우가 많아, 복합성의 비율이 높은 것으로 생각된다.</li></ul><figure id="8cb947d6-7519-41ff-9a22-8be3cc9954ff" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.13.11.png"><img style="width:922px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.13.11.png"/></a></figure><ul id="c004f74c-fcdf-4030-aaf5-b72c95d276ff" class="toggle"><li><details open=""><summary>피부 타입 정의(출처: <a href="https://www.paulaschoice.co.kr/FrontStore/PointBBS/iBoardView.phtml?bbsid=pbbs_016&amp;iArticleId=101">폴라초이스 뷰티정보</a></summary><p id="9bfb226d-f2a4-42bb-9019-abe6930a24f7" class="">• 중성 (유분기나 건조한 부위가 없는 피부)</p><p id="273a8ed3-8de4-4c9b-9604-6e3347696b9e" class="">• 지성 (건조한 부위가 없으며 피부 전체로 유분기가 있음)</p><p id="b8c4f132-e581-4e59-9d91-72ac427fbf46" class="">• 건성 (각질이 일어날 수 있으며, 유분기가 전혀 없으며, 피부가 당기는 느낌을 가짐)</p><p id="ab61b396-fb9d-4925-9596-a28e8f43e933" class="">• 복합성 (주로 얼굴의 중심 부위는 지성이며, 그 외부분은 건조하거나 중성의 피부를 가짐)</p><p id="b4acec44-9dec-4ed2-a1a0-8d3c9c4060e1" class="">
+</p></details></li></ul><p id="78183b64-b786-4281-b159-7a08fcb901bf" class="">
+</p><h3 id="5af0f829-485b-43c9-9653-60d305da1b9e" class=""><strong>(4) 사용자 평점 분포</strong></h3><ul id="62af299b-9be3-4664-a619-b598587a0ced" class="bulleted-list"><li>전체 고객 중 4점을 준 고객이 가장 많았고, 그 다음은 5점, 3점 순서로 평점을 부여하였다.</li></ul><ul id="0dc91919-d3b8-453d-8aa4-f81dc73dbdbb" class="bulleted-list"><li>1, 2점을 준 고객이 많지 않은 것으로 보아, 3점은 긍정적인 평가를 한 것이 아님을 알 수 있다.</li></ul><ul id="3fa64cb6-2107-46cf-b35e-b558cca60d61" class="bulleted-list"><li>이로 인해, 고객 리뷰 감성 분석 시, 데이터의 균형을 위해 1~3점은 부정, 4~5점을 긍정으로 라벨링하였다.</li></ul><figure id="687792e2-9eff-49d1-b85c-2e81995ff78d" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.16.17.png"><img style="width:1010px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.16.17.png"/></a></figure><p id="d7dbf951-e6b8-45df-8cda-2caf4324e76b" class="">
+</p><h3 id="63c5c378-23a0-4cab-b57f-f250925c2476" class=""><strong>(5) 화장품 브랜드 분포</strong></h3><ul id="19f2834f-bf77-4999-ac11-2295b138a84e" class="bulleted-list"><li>이니스프리의 제품이 9.3%로 1위로 점유하고 있고, 미세한 차이로 에뛰드가 2위로 점유하고 있다.</li></ul><ul id="c851f0e6-2d5c-4cc2-ae3c-aa828ba37680" class="bulleted-list"><li>브랜드 점유율 별로 수치 상 큰 차이가 없어, 국내 화장품 시장의 경쟁이 치열함을 알 수 있다.</li></ul><p id="ab11bc5e-f1af-4f03-9a2b-8a6160ecf145" class="">
+</p><figure id="6a5b0784-1b93-4197-826c-193b00d6bc69" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__4.47.17.png"><img style="width:720px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__4.47.17.png"/></a></figure><p id="a39bc479-2fc7-4b46-b83f-179d5997e4f2" class="">
+</p><h2 id="5549b0a1-9c44-4f21-a744-611134c92382" class="block-color-brown">3-2. 고객 리뷰 감성 분석</h2><h3 id="c299833f-b645-4536-b8a3-3192bc716395" class="">(1) 피부타입별 리뷰 살펴보기 By 형태소 분석</h3><ul id="2eb50059-ae79-4aca-ab19-caefbdd170eb" class="bulleted-list"><li>피부타입 : 건성(23.8%), 지성(14.1%), 민감성(14.1%), 중성(6.3%), 복합성(41.5%)</li></ul><ul id="6c6983b3-a61b-4782-a834-039b7c78171b" class="bulleted-list"><li>건성 타입 : 본인 피부타입인 &#x27;건성&#x27;이라는 단어를 리뷰에 특히 많이 언급했다(총 8824번). 건조한 피부 특성 상 &#x27;보습&#x27;의 출현 빈도도 다른 피부타입 대비 높은 편이다.</li></ul><figure id="2c7c6494-ff4c-4917-9fdc-713e35f7f8be" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.10.55.png"><img style="width:1492px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.10.55.png"/></a></figure><ul id="aa00f410-7919-4d18-9baa-fda8d422e4cb" class="bulleted-list"><li>지성 타입 : &#x27;가격&#x27; 다음으로 &#x27;지속&#x27;이 많이 언급된 점이 특징이다(총 4479번). 유분이 많아 화장이 금방 번지는 피부 특성 상 화장품의 지속력을 중요시하는 것으로 보인다. 건성 타입 주요 단어에 없던 &#x27;여드름&#x27;이 총 3022번 나왔고 &#x27;트러블&#x27;의 빈도도 중위권에 속한다. 유분으로 인한 여드름 등 피부 트러블이 지성 타입 소비자들의 고민 사항임을 유추할 수 있다. 또한 이들은 &#x27;매트&#x27;한 &#x27;파우더&#x27; 타입의 화장품을 선호하는 것으로 보인다. </li></ul><figure id="1e6f89f0-b076-48e0-a002-d14d4a39b1a3" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.11.05.png"><img style="width:1378px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.11.05.png"/></a></figure><ul id="e780f8ab-f3a1-4a2c-9d9c-fc2210152c92" class="bulleted-list"><li> 민감성 : &#x27;트러블&#x27;이라는 단어가 총 4547번으로 &#x27;향&#x27;, &#x27;가격&#x27; 다음 많이 출현했다. &#x27;성분&#x27;, &#x27;민감&#x27;, &#x27;진정&#x27; 등도 특징적인 단어다. 자극에 민감하고 트러블이 쉽게 발생하는 피부 특성 상 &#x27;성분&#x27;을 중요시하며 &#x27;피부 진정&#x27;에 비교적 관심이 많은 것으로 보인다.</li></ul><figure id="7b812f1e-a4b1-4956-a9d8-7db341d1f121" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.24.25.png"><img style="width:1380px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.24.25.png"/></a></figure><ul id="23bfd40b-de65-41d8-90cd-fd89dbf9c3f0" class="bulleted-list"><li>중성 : 위 3가지 피부 타입에 언급된 단어들이 고르게 나오며 특징적인 단어는 눈에 띄지 않는다. 복합성 타입도 중성과 결과가 비슷해 생략한다.</li></ul><ul id="4d00a838-b339-487c-8160-5bc8b6d1bf1b" class="bulleted-list"><li>건성, 지성, 민감성, 중성 모두 <strong>&#x27;가격&#x27;</strong>과 <strong>&#x27;향&#x27;</strong>이 출현 빈도 <strong>TOP 3</strong> 단어에 속한다. 피부 타입에 관계 없이 화장품 소비자들이 제품을 선택할 때 중요시하는 요소로 해석할 수 있다.</li></ul><figure id="9a768e1f-236b-4a6a-aedb-1becc8f8eeae" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.33.43.png"><img style="width:1484px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.33.43.png"/></a></figure><p id="8fc8ee2b-6394-4b69-abe2-5820be4438f5" class="">
+</p><h3 id="85a007a8-a090-449c-a31f-c0bbab313b66" class="">(2) 감성 분석으로 긍정/부정 리뷰 판별하기</h3><ul id="c07ffd6e-ae63-4877-b64a-95e968aa78f0" class="bulleted-list"><li>소비자들은 화장품 리뷰를 남길 때 1~5점 사이의 평점(score)을 함께 매길 수 있다. 1~3점은 부정적인 반응(negative), 4~5점은 긍정적인 반응(positive)으로 구분했다.</li></ul><ul id="78b5cf8e-6a74-4709-b50f-fc9f02a70f1b" class="bulleted-list"><li>긍정적인 반응은 1, 부정적인 반응은 0으로 라벨링해 새로운 Column인 &#x27;po_ne&#x27;를 생성했다. </li></ul><figure id="0f1819b7-02c6-488c-be29-279efb328b13" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.39.30.png"><img style="width:1504px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__5.39.30.png"/></a></figure><p id="250a0bd0-0d11-4028-a911-3285f3daf30a" class="">
+</p><ul id="74755ef1-b5ca-4c54-a9b3-06b1650ae8d5" class="bulleted-list"><li>학습(Train) : 7만개 리뷰를 한글 형태소 분석기인 KoNLPy를 사용해 형태소 단위로 토큰화했다. 여기에 TF-IDF Vectorizer를 적용해 문서 구별 능력에 따라 단어에 가중치를 뒀다. 벡터로 변환한 리뷰에 LightBGM Classifier를 사용, 긍정/부정으로 분류하는 학습을 시켰다.</li></ul><ul id="74ce99cc-a2ed-4b86-a075-9a099fd8ba24" class="bulleted-list"><li>테스트(Test) : 나머지 3만개 데이터로 테스트를 진행한 결과 Accuracy 84.7%를 얻었다.</li></ul><p id="1fe205ae-5f37-40f2-b112-bebc9e620cd7" class="">
+</p><pre id="9e52cd31-d1df-4515-9586-0d405c9a7913" class="code"><code>from sklearn.metrics import accuracy_score
+
+tfidf_matrix_test = tfidf_vect.transform(test_df[&#x27;review&#x27;])
+preds = lgbm_clf.predict(tfidf_matrix_test)
+
+accuracy_score(test_df[&#x27;po_ne&#x27;], preds)</code></pre><figure id="3e218dfa-7ad3-4dd5-9c00-dfce7766f5ca" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__3.14.49.png"><img style="width:1686px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__3.14.49.png"/></a></figure><p id="bca6a65a-a32f-483a-b666-fe5105dfe29e" class="">
+</p><ul id="53b8a0c2-3630-417a-a2e8-1eb048d77e8d" class="bulleted-list"><li>실제 사용 </li></ul><p id="55dcdaa4-a74a-4874-8ad2-6a3fb4320789" class="">리뷰 입력 시 긍정/부정을 판별해주는 분류기 함수 <strong>&#x27;write_review&#x27;</strong>를 만들었다. 긍정으로 판단할 경우 <strong>&#x27;긍정적인 리뷰입니다 :)&#x27;,</strong> 부정으로 판단할 경우 <strong>&#x27;부정적인 리뷰입니다 :(&#x27;</strong>라는 문구가 출력된다.</p><pre id="56f20360-6d9c-477b-9295-f8cf9fbbaa3e" class="code"><code>def write_review():
+       
+    review = input(&#x27;리뷰를 입력해주세요 :&#x27;)
+
+    str = [review]
+    
+    pred = lgbm_clf.predict(tfidf_vect.transform(str))
+
+    if pred == [1]:
+        print(&#x27;---&gt; 긍정적인 리뷰입니다 :)&#x27;)
+
+    else:
+        print(&#x27;---&gt; 부정적인 리뷰입니다 :(&#x27;)
+
+write_review()</code></pre><figure id="62db96ed-7a30-469c-86b3-b6f1e186a852" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__3.09.57.png"><img style="width:1372px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__3.09.57.png"/></a></figure><ul id="489e270e-2678-46a1-a60a-87f18bd43466" class="bulleted-list"><li>사용 결과</li></ul><figure id="3ec4857f-9b0a-4e99-8169-6c9be195d317" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__3.10.56.png"><img style="width:1596px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__3.10.56.png"/></a></figure><h1 id="58531ab0-f464-4ac0-aab3-c560032f46d7" class="block-color-brown">4. 추천 시스템</h1><h2 id="42d0e4ca-47c8-491b-bfce-cec0bd40ae1b" class="block-color-brown">4-1. 협업 필터링 개념</h2><p id="55bab4bd-087a-4a86-9236-45878d1ee5b3" class="">: 많은 사용자들로부터 얻은 기호 정보에 따라, 사용자들의 관심사들을 자동적으로 예측하게 해주는 방법</p><h3 id="9f75e8fc-22bf-4d0a-b602-50c82c637bff" class=""><strong>(1) 사용자 기반 협업 필터링</strong></h3><p id="a89a944b-57e5-4a5c-bec1-9f3de38087a9" class=""> 나와 비슷한 성향을 지닌 사용자를 기반으로, 그 사람이 구매한 상품을 추천</p><figure id="61043382-d539-4945-9d83-294b174f9133" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__4.32.52.png"><img style="width:1292px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__4.32.52.png"/></a></figure><h3 id="9c2cbf01-d038-4ec1-9075-e38cc41a2b96" class=""><strong>(2) 아이템 기반 협업 필터링</strong></h3><p id="c66abc31-288e-43ac-b16c-9c8e5c6865a0" class="">내가 이전에 구매했던 아이템을 바탕으로, 그 상품과 유사한 다른 상품을 추천</p><figure id="959f1e20-9cf8-4cd5-88a1-33f955819ab3" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__4.28.25.png"><img style="width:576px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__4.28.25.png"/></a></figure><p id="63fb3583-e6c2-413b-9639-7d0e12dd6974" class="">
+</p><p id="353633f2-561e-460d-8308-a58cb7a6f5f7" class="block-color-brown">
+</p><h2 id="f7b78bf2-96d7-4f5a-899b-07c0495a0f66" class="block-color-brown">4-2. 사용자 기반</h2><h3 id="ea29dc0f-a1b8-4955-a45c-d54e828b0ef3" class=""><strong>(1) 제품 카테고리, 사용자 특성(피부타입, 성별, 나이) 입력</strong></h3><h3 id="4de2c113-98ca-4e01-b5e1-cdd806118807" class="">→ <strong>동일한 특성을 가진 사용자가 5점을 부여한 제품 리스트 제공</strong></h3><figure id="c5da8883-70e9-4078-8737-44999adc8252" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__6.57.09.png"><img style="width:672px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__6.57.09.png"/></a></figure><p id="2ef331d9-6bf1-4ef1-bf9e-cbd6ebd7c633" class="">→ <strong>결과</strong></p><figure id="595dc503-2460-45b8-b41c-1097cbed9ca3" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__5.07.58.png"><img style="width:1994px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__5.07.58.png"/></a></figure><h3 id="5241f0ba-b249-4bd5-a367-d599a8534261" class=""><strong>(2) 사용자 기반 협업 필터링을 통한 추천시스템</strong></h3><ul id="1208b1f3-1453-4b44-a4f6-2ad1f85854f4" class="bulleted-list"><li>컨셉: 사용자 ID를 입력하면, 해당 ID 와 유사한 사용자가 좋게 평가한 제품 추천</li></ul><ul id="8c849199-1e5b-4925-8c58-95399a1d15ce" class="bulleted-list"><li>사용할 알고리즘 성능 비교 → <strong>KNN Basic의 RMSE가 제일 작은 것으로 확인 </strong></li></ul><ul id="87c998cc-33be-41b5-8a86-356e73d3a84f" class="bulleted-list"><li><strong>KNN Basic을 활용하여 추천 시스템 구축</strong><figure id="433a76b1-d2fa-45df-97c9-392f17bd0f0c" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__8.12.42.png"><img style="width:624px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__8.12.42.png"/></a></figure></li></ul><p id="d37475e5-b96b-47e2-98ae-603f94f24d2b" class="">
+</p><ul id="3754df88-ffbf-4a02-a28e-b8d471baf00c" class="bulleted-list"><li>KNN Basic 원리</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="d127b694-6c58-47d8-9aa3-fce8f84dcbeb"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">화장품 선호 패턴이 유사한 사용자들은 유사 그룹으로 간주된다. 성향이 유사한 사용자를 찾기 위해 일반적으로 사용 되고 있는 피어슨 상관계수에 의한 유사도를 이용하였다. 가장 유사한 패턴을 보이는 K=5 명의 사용자들의 화장품 에서 가장 높은 선호도(평점)을 보이는 화장품의 리스트를 추천 제품으로 제시하였다</div></figure><div id="faa122d4-61da-4289-a33d-4dd303037235" class="column-list"><div id="7c0ab343-96f4-48d8-867c-5727f12afaaf" style="width:43.75%" class="column"><figure id="e405d9eb-d943-46c1-9609-303fcda62da4" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__5.29.19.png"><img style="width:288px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__5.29.19.png"/></a></figure></div><div id="cd1a8100-d4d2-497d-a620-9c5d48e34746" style="width:56.25%" class="column"><figure id="a44c580f-142e-40fc-9852-c532d309f525" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__5.15.48.png"><img style="width:336px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__5.15.48.png"/></a></figure><p id="0c72ff63-b2ed-4f86-b4cf-f07216054bd3" class="">
+</p></div></div><ul id="a858aa69-73bd-44af-b01d-b97d126f98dc" class="bulleted-list"><li>코드</li></ul><pre id="6a490f4f-d6b9-4c4f-9eff-c4472ffdc372" class="code"><code>id_recomm, cos_name, cos_comp, cos_price = list(), list(), list(), list()
+
+user_id = input(&#x27;ID를 입력하세요:  &#x27;)
+print(&#x27;\n&#x27;)
+
+idx = id_list.index(user_id)
+
+knn_result = algo.get_neighbors(idx, k=5)
+for i in knn_result:
+    id_recomm.append(filtered_id[&#x27;id&#x27;][filtered_id.index[i]])
+    
+print(&#x27;유사한 사용자 ID는: {} 입니다.&#x27;.format(id_recomm))
+print(&#x27;\n&#x27;)
+
+print(&#x27;추천 화장품 정보 : &#x27;)
+
+for k in knn_result:
+    max_rating = data.df[data.df[&#x27;id&#x27;]==k][&#x27;score&#x27;].max()
+    cos_id=data.df[(data.df[&#x27;score&#x27;]==max_rating)&amp;(data.df[&#x27;id&#x27;]==k)][&#x27;item&#x27;].values
+    
+    for cos_item in cos_id:
+        cos_name.append(cos_list[cos_item]), 
+        cos_comp.append(filtered_id[&#x27;company&#x27;][filtered_id[&#x27;item&#x27;]==cos_list[cos_item]].unique()[0])
+        cos_price.append(filtered_id[&#x27;price&#x27;][filtered_id[&#x27;item&#x27;]==cos_list[cos_item]].unique()[0])
+        
+result = pd.DataFrame([cos_name, cos_comp, cos_price]).T
+result.columns = [&#x27;제품명&#x27;, &#x27;회사명&#x27;, &#x27;가격&#x27;]
+result</code></pre><p id="b75f50b4-3dbf-49f7-abfa-63d6df9df084" class="">
+</p><ul id="1b364445-8185-4d7b-aaf9-82d95e852df9" class="bulleted-list"><li>결과</li></ul><figure id="1b266160-ccb2-4321-b5d3-d7ed8d0b06a4" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__7.54.27.png"><img style="width:624px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-27__7.54.27.png"/></a></figure><p id="f5744cf5-71e1-4a81-9458-c8f217592792" class="">
+</p><h2 id="ca7ed6ce-a366-4205-96c1-9acb616438ce" class="block-color-brown">4-3. 아이템(태그) 기반 </h2><h3 id="826581eb-f4c6-4f0a-a3c0-07b88d2652ee" class="">(1) 아이템 기반 협업 필터링</h3><h3 id="003cba6a-aaa7-4113-b6c6-62e941a3f6ac" class="">1. 제품명 입력 </h3><ul id="363dbd55-27be-4140-b22d-ea4ae904fb37" class="bulleted-list"><li>이전에 구매했거나 관심있는 상품기반으로 연관성 있는 다른 상품을 추천</li></ul><ul id="ea0946b5-b1e2-4245-878d-da34b2ef0a29" class="bulleted-list"><li>유사성 계산 알고리즘 : TF-IDF</li></ul><p id="47ca72a3-d91b-4ff6-865f-dcc7403b4a6f" class="">
+</p><ul id="383f1aba-e384-4125-abf1-2205d4c6c5e9" class="bulleted-list"><li>코드</li></ul><pre id="0257b2d2-2a75-413e-b831-5bef03682332" class="code"><code>from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
+
+tf1 = TfidfVectorizer(analyzer=&#x27;word&#x27;, ngram_range=(1, 2),
+                      min_df=0)
+tfidf_matrix1 = tf1.fit_transform(item_dfs[&#x27;tag&#x27;])
+cosine_sim1 = linear_kernel(tfidf_matrix1, tfidf_matrix1)
+
+titles = item_dfs[&#x27;NAME&#x27;]
+indices = pd.Series(item_dfs.index, index=item_dfs[&#x27;NAME&#x27;])</code></pre><pre id="8612c59a-d0ac-47ac-87ff-cdcdea10ba41" class="code"><code>def tags_recommendation(product_name):
+
+    product_name = input(&#x27;제품명을 입력하세요 : &#x27;)
+
+    print(&#x27;\n&#x27;)
+    print(&#x27;선택한 제품의 정보 : &#x27;)
+
+    display(item_dfs[item_dfs[&#x27;NAME&#x27;] == product_name])
+
+    idx = indices[product_name]
+    sim_scores = list(enumerate(cosine_sim1[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:11]
+    cosmetics_indices = [i[0] for i in sim_scores]
+
+    print(&#x27;\n&#x27;)
+    print(&#x27;추천 화장품 : &#x27;)
+
+    recommend = pd.DataFrame(titles.iloc[cosmetics_indices])
+    recommend[&#x27;sim&#x27;] = sim_scores
+    recommend = recommend.merge(
+        item_dfs[[&#x27;NAME&#x27;, &#x27;BRAND&#x27;, &#x27;keywords&#x27;]], left_on=&#x27;NAME&#x27;, right_on=&#x27;NAME&#x27;, how=&#x27;inner&#x27;)
+
+    return recommend
+
+
+reco = tags_recommendation(product_name)
+
+reco[&#x27;similarity&#x27;] = [r for i in range(
+    len(reco)) for r in reco[&#x27;sim&#x27;][i]][1::2]
+reco[[&#x27;NAME&#x27;, &#x27;BRAND&#x27;, &#x27;keywords&#x27;, &#x27;similarity&#x27;]]</code></pre><p id="fc89f4bd-5526-41dc-a351-5dc4c33a240b" class="">
+</p><ul id="ee5ba25e-20dd-40b0-bba5-1f13d80a744b" class="bulleted-list"><li>결과</li></ul><figure id="d36222de-7ca2-4322-a9ba-9d4176b97eb2" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/final_01.png"><img style="width:1712px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/final_01.png"/></a></figure><p id="1890dbbf-9ac1-4bc6-81fd-67627d2b3d39" class="">
+</p><h3 id="a3666eb9-5e70-4c03-a803-5cbbe48a1b30" class="">2. 태그 입력</h3><ul id="2d60ad85-d644-4ae6-aaef-5d946d7d36ae" class="bulleted-list"><li></li></ul><ul id="741629c5-3569-428f-b971-cf0093aaf337" class="bulleted-list"><li></li></ul><p id="aeb0ff92-576e-4ef1-823b-ad512311469f" class="">
+</p><p id="050bf8a4-bd0a-446a-b681-88864d45cebb" class="">
+</p><h1 id="af651c41-6ccc-4744-9421-73289311a75c" class="block-color-brown">5. 결론</h1><p id="594f36a4-4972-43ff-b657-1dac65219f4f" class="">
+</p><h2 id="de66b580-2846-46d7-bf11-f01aff404fcd" class="block-color-brown">5-1. </h2><p id="0c4d72a9-dfcb-45ef-96f3-a5539ba20053" class="">
+</p><h2 id="49e75ac6-b90a-4ec4-a63d-5671bd3eab04" class="block-color-brown">5-2. 기대 효과</h2><h3 id="476d5e48-5c94-4efe-9683-3c2e2611d305" class=""><strong>(1) 판매자 측면</strong></h3><ul id="d818a5cd-9cdc-409a-a7da-cc0b197401a5" class="bulleted-list"><li>대량 맞춤을 통하여 일대일 마케팅이 가능, 웹 개인화 맞춤화 서비스가 가능하여 고객의 충성도 높일 수 있음.</li></ul><h3 id="cd6e8a6e-3a47-439c-a0b4-4f3f4088b948" class=""><strong>(2) 구매자 측면</strong></h3><ul id="8f74ccc1-0e1c-4b3f-9772-8f1b7822d213" class="bulleted-list"><li>사용자의 관심을 기반으로 하여, 상품 선택 시 탐색 비용을 감소시켜줌(정보 과부하 현상 완화)</li></ul><ul id="5cb896cf-4a66-4ba3-80e6-25be3c3bd3ea" class="bulleted-list"><li>새로운 상품을 발견하는 즐거움을 바탕으로, 추가적인 제품, 서비스 사용을 유도</li></ul><ul id="ed689748-9ed2-4d57-ab29-b5cf4a7bdc98" class="bulleted-list"><li>다른 사용자들이 더 좋게 평가한 제품을 추천함으로써 검증된 아이템을 먼저 제시 받을 수 있음.</li></ul><ul id="c12ad22e-06cb-4fbf-b126-a9887144cb30" class="bulleted-list"><li></li></ul><h1 id="ccf29348-a310-45e9-bb5f-5db3e882778f" class="block-color-brown">6. 프로젝트 회고</h1><h2 id="7476c188-d695-44cf-9bc6-28ed6b8f4cef" class="block-color-brown">6-1. 협업 필터링 방식의 한계 </h2><p id="c130f5d0-8099-42ff-b5b6-ce3cfacc611c" class=""><strong>(1) 콜드 스타트</strong></p><ul id="640a639c-864e-4e0f-9da3-18463a22db73" class="bulleted-list"><li>평점을 매기지 않은 신규 사용자에게 화장품 추천 불가.</li></ul><p id="ed713469-a332-471d-b9cd-54dbd301a4c1" class=""><strong>(2) 계산 효율 저하</strong></p><ul id="a87903c1-4efa-49dc-bea9-c1544433372f" class="bulleted-list"><li>사용자가 일정 수준 이상 많아야 정확한 결과를 낼 수 있으나, 협업 필터링 자체가 계산량이 많은 알고리즘이라서, 사용자가 많아질수록 시간 효율성이 떨어질 수 있음.</li></ul><p id="b3d60f8e-712a-41a8-bbd5-5bc4ebd35c2b" class=""><strong>(3) 롱테일</strong></p><ul id="381a38ad-64a0-45b8-bca2-ff7658cd569f" class="bulleted-list"><li>롱테일: 파레토 법칙(전체 결과의 80%가 전체 원인의 20%에서 일어나는 현상)을 그래프로 나타내었을 때, 꼬리처럼 긴 부분을 형성하는 80%의 부분을 일컫는 말.</li></ul><ul id="badf948b-cf19-41af-82a8-87d1c74daaff" class="bulleted-list"><li>사용자들의 관심이 저조한 화장품은 정보가 부족하여 추천되지 못하는 문제 발생.</li></ul><figure id="f2d90383-808e-4e3b-bb12-02161514f486" class="image"><a href="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__4.22.15.png"><img style="width:576px" src="Untitled%20eb28bf44d6654e1ba9d0d4dd1a76cde1/_2020-05-28__4.22.15.png"/></a></figure><p id="0675fb52-aab4-4ce8-b0db-352073330cea" class="">
+</p><h1 id="7a5b56ab-9984-41d2-b00d-43f3e992ba49" class="block-color-brown">7. 참고자료</h1><p id="5ac02107-8dd8-4b98-8576-4429803edde1" class="">(1) 프로젝트 코드: <a href="https://github.com/glowpickteam/glowpick_project.git">https://github.com/glowpickteam/glowpick_project.git</a></p><p id="b9f76661-2bd8-418b-82a6-205010cc9d3c" class="">(2) 협업 필터링 관련</p><ul id="e84c5ef6-6d4d-4afa-9739-1b6c6ba96172" class="bulleted-list"><li><a href="http://machinelearningkorea.com/2019/05/18/surprise-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%98%91%EC%97%85%ED%95%84%ED%84%B0%EB%A7%81collaborative-filtering-%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%B9%98/#k-fold%EB%A5%BC-5%EB%A1%9C-%EB%82%98%EB%88%84%EA%B3%A0,-%EC%A0%9C%EC%9D%BC-%EB%86%92%EA%B2%8C-%EB%82%98%EC%98%A8-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%84-%ED%99%95%EC%9D%B8%ED%95%B4%EB%B3%B4%EC%9E%90.-%ED%98%84%EC%9E%AC%EB%A1%9C%EC%8D%AC-KNNBasic-%EC%9D%B4-%EC%A0%9C%EC%9D%BC-%EB%86%92%EB%8B%A4.-%EC%82%AC%EC%9A%A9%ED%95%A0%EC%88%98-%EC%9E%88%EB%8A%94-%EB%A1%9C%EC%A7%81%EC%9D%B4-%EB%A7%8E%EC%9C%BC%EB%8B%88-%ED%95%98%EB%82%98%ED%95%98%EB%82%98-%EC%9D%B4%EC%9A%A9%ED%95%B4%EB%B3%B8%EB%8B%A4.">surprise 라이브러리를 이용한 협업필터링(Collaborative Filtering) 파이썬 치트코드</a></li></ul><ul id="e7e3a6a0-2f64-4b7c-b132-4fb7d58adbc6" class="bulleted-list"><li><a href="https://brunch.co.kr/@biginsight/15">추천 알고리즘, 내 취향을 어떻게 그렇게 잘알아?</a></li></ul><p id="4c3e9fdf-a498-45ec-97d7-59fbc6e17efd" class="">
+</p><p id="70798cde-8ae6-4b69-8ed7-1d90065eff4a" class="">
+</p></div></article></body></html>
